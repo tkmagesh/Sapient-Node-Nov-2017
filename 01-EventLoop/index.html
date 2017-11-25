@@ -15,16 +15,18 @@
 				setTimeout(triggerWork);
 			}
 			function triggerWork(){
-				doWork(onWorkCompletion);
-				
+				doWork(onWorkCompletion, onWorkProgress);
 			}
 			function onWorkCompletion(){
 				displayMessage('Work Completed!');
 			}
+			function onWorkProgress(completionPercentage){
+				document.getElementById('workProgress').value = completionPercentage;
+			}
 			function displayMessage(msg){
 				document.getElementById('divMessages').innerHTML += msg+ "<br/>";
 			}
-			function doWork(onComplete){
+			function doWork(onComplete, onProgress){
 				var totalIterations = 1000,
 					currentIteration = 0;
 				function oneIteration(){
@@ -34,6 +36,11 @@
 
 							}
 					++currentIteration;
+					var completionPercentage = (currentIteration / totalIterations) * 100;
+					if (typeof onProgress === 'function'){
+						onProgress(completionPercentage);
+					}
+
 					if (currentIteration < totalIterations){
 						setTimeout(oneIteration);
 					} else {
@@ -51,5 +58,8 @@
 	<input type="text" >
 	<input type="button" value="Do Work" id="btnDoWork">
 	<div id="divMessages"></div>
+	<div>
+		<progress id="workProgress" min="0" max="100" value="0"></progress>
+	</div>
 </body>
 </html>
