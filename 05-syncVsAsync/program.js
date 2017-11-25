@@ -18,13 +18,13 @@ try{
 function addAsync(x,y,onResult){
 	setTimeout(function(){
 		if (x % 2 === 0 && y% 2 === 0){
-			var err = Error('Invalid arguments');
+			var err = new Error('Invalid arguments');
 			onResult(err);
 			return;
 		}
 		var result = x + y;
 		if (typeof onResult === 'function')
-			onResult(null, result);
+			onResult(result);
 	},4000)
 }
 
@@ -38,7 +38,7 @@ console.log('[async] invalid arguments');
 addAsync(10,2, function(e, result){
 	if (e){
 		console.log('something went wrong');
-		return;		
+		return;
 	}
 	console.log(result);
 });
