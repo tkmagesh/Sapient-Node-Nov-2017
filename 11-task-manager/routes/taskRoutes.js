@@ -21,7 +21,7 @@ router.get('/new', function(req, res, next){
 router.post('/new', function(req, res, next){
 	var taskName = req.body.newTaskName,
 		id = tasks.reduce(function(prevResult, task){
-			return task.id > prevResult ? prevResult : task.id;
+			return task.id > prevResult ? task.id : prevResult;
 		}, 0) + 1;
 	var newTask = {
 		id : id,
@@ -32,4 +32,14 @@ router.post('/new', function(req, res, next){
 	res.redirect('/tasks');
 });
 
+router.get('/toggle/:id', function(req, res, next){
+	var id = parseInt(req.params.id);
+	var taskToToggle = tasks.filter(function(task){
+		return task.id === id;
+	})[0];
+	if (taskToToggle){
+		taskToToggle.isCompleted = !taskToToggle.isCompleted;
+	}
+	res.redirect('/tasks');
+})
 module.exports = router;
