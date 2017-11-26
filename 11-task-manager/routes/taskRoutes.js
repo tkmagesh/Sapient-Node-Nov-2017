@@ -9,6 +9,9 @@ var tasks = [
 /* GET users listing. */
 router.get('/', function(req, res, next) {
   var viewData = {
+  	completedCount : tasks.reduce(function(prevResult, task){
+  		return task.isCompleted ? ++prevResult : prevResult;
+  	},0),
   	tasks : tasks
   };
   res.render('tasks/index', viewData);

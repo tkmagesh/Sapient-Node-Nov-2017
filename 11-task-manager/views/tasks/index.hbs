@@ -13,9 +13,9 @@
 <hr />
 <a href="/tasks/new">Create New</a>
 <div class="stats">
-	<span class="completed">1</span>
+	<span class="completed">{{completedCount}}</span>
 	<span> / </span>
-	<span>2</span>
+	<span>{{tasks.length}}</span>
 </div>
 <ol>
 	{{#each tasks}}
