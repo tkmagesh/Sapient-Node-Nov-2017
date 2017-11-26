@@ -41,5 +41,12 @@ router.get('/toggle/:id', function(req, res, next){
 		taskToToggle.isCompleted = !taskToToggle.isCompleted;
 	}
 	res.redirect('/tasks');
+});
+
+router.post('/removeCompleted', function(req, res, next){
+	tasks = tasks.filter(function(task){ 
+		return !task.isCompleted;
+	});
+	res.redirect('/tasks');
 })
 module.exports = router;
