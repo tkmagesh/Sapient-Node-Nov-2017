@@ -1,13 +1,12 @@
 var express = require('express');
 var router = express.Router();
 
-var tasks = [
-	{id : 1, name : 'Watch a movie', isCompleted : false},
-	{id : 2, name : 'Plan vacation', isCompleted : true},
-];
+var taskService = require('../services/taskService');
+
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
+	var tasks = taskService.getAll();
   var viewData = {
   	completedCount : tasks.reduce(function(prevResult, task){
   		return task.isCompleted ? ++prevResult : prevResult;
@@ -22,34 +21,35 @@ router.get('/new', function(req, res, next){
 });
 
 router.post('/new', function(req, res, next){
-	var taskName = req.body.newTaskName,
-		id = tasks.reduce(function(prevResult, task){
-			return task.id > prevResult ? task.id : prevResult;
-		}, 0) + 1;
-	var newTask = {
-		id : id,
-		name : taskName,
+	
+	var newTaskData = {
+		id : 0,
+		name : req.body.newTaskName,
 		isCompleted : false
 	};
-	tasks.push(newTask);
+	var newTask = taskService.addNew(newTaskData);
 	res.redirect('/tasks');
 });
 
 router.get('/toggle/:id', function(req, res, next){
 	var id = parseInt(req.params.id);
-	var taskToToggle = tasks.filter(function(task){
-		return task.id === id;
-	})[0];
+	var taskToToggle = taskService.get(id);
 	if (taskToToggle){
 		taskToToggle.isCompleted = !taskToToggle.isCompleted;
 	}
+	taskService.update(id, taskToToggle);
 	res.redirect('/tasks');
 });
 
 router.post('/removeCompleted', function(req, res, next){
-	tasks = tasks.filter(function(task){ 
-		return !task.isCompleted;
-	});
+	taskService
+		.getAll()
+		.filter(function(task){
+			return task.isCompleted;
+		})
+		.forEach(function(taskToRemove){
+			taskService.remove(taskToRemove.id);
+		});
 	res.redirect('/tasks');
 })
 module.exports = router;
