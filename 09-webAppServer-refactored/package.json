@@ -1,0 +1,20 @@
+{
+  "name": "web-app-server",
+  "version": "0.1.0",
+  "description": "a sample application to demonstrate node.js",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [
+    "node",
+    "demo",
+    "webapp"
+  ],
+  "author": "Magesh K",
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "^2.3.0"
+  }
+}
